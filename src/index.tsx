@@ -1,9 +1,13 @@
 import ReactDOM from 'react-dom';
 import App from './app/layouts/App';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import 'react-toastify/dist/ReactToastify.min.css';
 import reportWebVitals from './reportWebVitals';
 import ScrollToTop from './app/layouts/ScrollToTop';
 import { createGlobalStyle } from 'styled-components';
+
+export const history = createBrowserHistory();
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -12,12 +16,12 @@ const GlobalStyle = createGlobalStyle`
 `
 
 ReactDOM.render(
-    <BrowserRouter>
+    <Router history={history}>
         <ScrollToTop>
             <GlobalStyle />
             <App />
         </ScrollToTop>
-    </BrowserRouter>,
+    </Router>,
     document.getElementById('root')
 );
 
