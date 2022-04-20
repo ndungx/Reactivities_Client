@@ -13,8 +13,25 @@ class ActivityStore {
     @observable target = "";
 
     @computed get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort(
+        return this.groupActivityByDate(
+            Array.from(this.activityRegistry.values())
+        );
+    }
+
+    groupActivityByDate(activities: IActivity[]) {
+        const sortedActivities = activities.sort(
             (a, b) => Date.parse(a.date) - Date.parse(b.date)
+        );
+        return Object.entries(
+            sortedActivities.reduce(
+                (activities, activity) => {
+                    const date = activity.date.split("T")[0];
+                    activities[date] = activities[date]
+                        ? [...activities[date], activity]
+                        : [activity];
+                    return activities;
+                }, {} as { [key: string]: IActivity[] }
+            )
         );
     }
 
@@ -23,11 +40,13 @@ class ActivityStore {
 
         try {
             const activities = await agents.Activities.list();
+
             runInAction('loading activities', () => {
                 activities.forEach((activity) => {
                     activity.date = activity.date.split('.')[0];
                     this.activityRegistry.set(activity.id, activity);
                 });
+
                 this.loadingInitial = false;
             })
         } catch (err) {
@@ -41,18 +60,21 @@ class ActivityStore {
 
         if (activity) {
             this.activity = activity;
+
             return activity;
         } else {
             this.loadingInitial = true;
+
             try {
                 activity = await agents.Activities.details(id);
+
                 runInAction('getting activity', () => {
                     this.activity = activity;
                     this.loadingInitial = false;
                     activity.date = activity.date.split('.')[0];
                     this.activityRegistry.set(activity.id, activity);
-                    
                 })
+
                 return activity;
             } catch (err) {
                 console.log(err);
@@ -65,7 +87,7 @@ class ActivityStore {
         this.activity = null;
     }
 
-    getActivity = (id: string) => { 
+    getActivity = (id: string) => {
         return this.activityRegistry.get(id);
     }
 
@@ -74,6 +96,7 @@ class ActivityStore {
 
         try {
             await agents.Activities.create(activity);
+
             runInAction('creating activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.submitting = false;
@@ -89,6 +112,7 @@ class ActivityStore {
 
         try {
             await agents.Activities.update(activity);
+
             runInAction('editing activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.activity = activity;
@@ -106,6 +130,7 @@ class ActivityStore {
 
         try {
             await agents.Activities.delete(id);
+            
             runInAction('deleting activity', () => {
                 this.activityRegistry.delete(id);
                 this.submitting = false;
