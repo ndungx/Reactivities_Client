@@ -1,17 +1,38 @@
 import { Link } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Button, Container, Header, Segment, Image } from 'semantic-ui-react'
 import styled from 'styled-components';
 
-const ContainerStyled = styled(Container)`
-  margin-top: 7em;
-`;
+const SegmentStyled = styled(Segment)`
+  display: flex;
+  align-items: center;
+  background-image: linear-gradient( 135deg, rgb(24, 42, 115) 0%, rgb(33, 138, 174) 69%, rgb(32, 167, 172) 89%) !important;
+  height: 100vh;
+`
+
+const HeaderOneStyled = styled(Header)`
+  font-size: 4em;
+  font-weight: normal;
+`
+
+const HeaderTwoStyled = styled(Header)`
+  font-size: 1.7em;
+  font-weight: normal;
+`
 
 const HomePage = () => {
   return (
-    <ContainerStyled>
-      <h1>Home page</h1>
-      <h3>Go to <Link to='/activities'>Activities</Link></h3>
-    </ContainerStyled>
+    <SegmentStyled inverted textAlign='center' vertical className='masthead' >
+      <Container text>
+        <HeaderOneStyled inverted>
+          <Image size='massive' src='/assets/logo.png' alt='logo' style={{ marginBottom: 12 }} />
+          Reactivities
+        </HeaderOneStyled>
+        <HeaderTwoStyled inverted content='Welcome to Reactivities' />
+        <Button as={Link} to='/activities' size='huge' inverted style={{ maginLeft: '0.5em' }}>
+          Take me to the activities!
+        </Button>
+      </Container>
+    </SegmentStyled>
   )
 }
 
