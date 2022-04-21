@@ -23,6 +23,8 @@ axios.interceptors.response.use(undefined, err => {
     if (status === 500) {
         toast.error("Server error - something went wrong!");
     }
+
+    throw err;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
