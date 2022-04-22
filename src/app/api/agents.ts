@@ -2,8 +2,17 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { IActivity } from "../models/activity";
+import { IUser, IUserFormValues } from "../models/user";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
+
+axios.interceptors.request.use((config) => {
+    const token = window.localStorage.getItem("jwt");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
 
 axios.interceptors.response.use(undefined, err => {
     if (err.message === "Network Error" && err.response === undefined) {
@@ -24,7 +33,7 @@ axios.interceptors.response.use(undefined, err => {
         toast.error("Server error - something went wrong!");
     }
 
-    throw err;
+    throw err.response;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -44,8 +53,15 @@ const Activities = {
     delete: (id: string) => request.delete(`/activities/${id}`)
 }
 
+const User = {
+    current: (): Promise<IUser> => request.get("/user"),
+    login: (user: IUserFormValues): Promise<IUser> => request.post("/user/login", user),
+    register: (user: IUserFormValues): Promise<IUser> => request.post("/user/register", user)
+}
+
 const exportedObject = {
     Activities,
+    User,
 }
 
 export default exportedObject
