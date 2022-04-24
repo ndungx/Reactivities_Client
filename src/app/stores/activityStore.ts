@@ -1,3 +1,4 @@
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { action, computed, observable, runInAction } from "mobx";
 import { SyntheticEvent } from "react";
 import { toast } from "react-toastify";
@@ -21,6 +22,51 @@ export default class ActivityStore {
     @observable submitting = false;
     @observable target = "";
     @observable loading = false;
+    @observable.ref hubConnection: HubConnection | null = null;
+
+    @action createHubConnection = (activityId: string) => {
+        this.hubConnection = new HubConnectionBuilder()
+            .withUrl(
+                "http://localhost:5000/chat",
+                {
+                    accessTokenFactory: () => this.rootStore.commonStore.token!
+                }
+            )
+            .configureLogging(LogLevel.Information)
+            .build();
+
+        this.hubConnection
+            .start()
+            .then(() => console.log(this.hubConnection!.state))
+            .then(() => {
+                console.log('Attempting to join group');
+                this.hubConnection?.invoke("AddToGroup", activityId);
+            })
+            .catch(error => console.log("Error establishing connection: ", error));
+
+        this.hubConnection.on("ReceiveComment", comment => {
+            runInAction(() => {
+                this.activity!.comments.push(comment);
+            });
+        });
+    }
+
+    @action stopHubConnection = () => {
+        this.hubConnection!.invoke("RemoveFromGroup", this.activity!.id)
+            .then(() => this.hubConnection!.stop())
+            .then(() => console.log("Connection stopped"))
+            .catch(err => console.log(err));
+    }
+
+    @action addComment = async (values: any) => {
+        values.activityId = this.activity!.id;
+
+        try {
+            await this.hubConnection!.invoke("SendComment", values);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     @computed get activitiesByDate() {
         return this.groupActivityByDate(
@@ -113,6 +159,7 @@ export default class ActivityStore {
             attendees.push(attendee);
             activity.attendees = attendees;
             activity.isHost = true;
+            activity.comments = [];
 
             runInAction('creating activity', () => {
                 this.activityRegistry.set(activity.id, activity);
