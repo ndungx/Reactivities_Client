@@ -15,6 +15,7 @@ import { RootStoreContext } from '../stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import PrivateRoute from './PrivateRoute';
 
 const ContainerStyled = styled(Container)`
   margin-top: 7em;
@@ -45,15 +46,15 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
           <NavBar />
           <ContainerStyled>
             <Switch>
-              <Route path='/activities' exact component={ActivityDashboard} />
-              <Route path='/activities/:id' component={ActivityDetails} />
-              <Route
+              <PrivateRoute path='/activities' exact component={ActivityDashboard} />
+              <PrivateRoute path='/activities/:id' component={ActivityDetails} />
+              <PrivateRoute
                 path={['/createActivity', '/manage/:id']}
                 key={location.key}
                 component={ActivityForm}
               />
-              <Route path='/profile/:username' component={ProfilePage} />
-              <Route component={NotFound} />
+              <PrivateRoute path='/profile/:username' component={ProfilePage} />
+              <PrivateRoute component={NotFound} />
             </Switch>
           </ContainerStyled>
         </>
