@@ -24,6 +24,7 @@ const HeaderTwoStyled = styled(Header)`
 `
 
 const HomePage = () => {
+  const token = window.localStorage.getItem('jwt');
   const rootStore = useContext(RootStoreContext);
   const { isLoggedIn, user } = rootStore.userStore;
   const { openModal } = rootStore.modalStore;
@@ -35,34 +36,38 @@ const HomePage = () => {
           <Image size='massive' src='/assets/logo.png' alt='logo' style={{ marginBottom: 12 }} />
           Reactivities
         </HeaderOneStyled>
-        {isLoggedIn && user ? (
-          <>
-            <HeaderTwoStyled inverted content={`Welcome back ${user.displayName}`} />
-            <Button as={Link} to='/activities' size='huge' inverted style={{ maginLeft: '0.5em' }}>
-              Go to activities
-            </Button>
-          </>
-        ) : (
-          <>
-            <HeaderTwoStyled inverted content='Welcome to Reactivities' />
-            <Button
-              onClick={() => openModal(<LoginForm />)}
-              size='huge'
-              inverted
-              style={{ maginLeft: '0.5em' }}
-            >
-              Login
-            </Button>
-            <Button
-              onClick={() => openModal(<RegisterForm />)}
-              size='huge'
-              inverted
-              style={{ maginLeft: '0.5em' }}
-            >
-              Register
-            </Button>
-          </>
-        )}
+        {
+          isLoggedIn && user && token
+            ? (
+              <>
+                <HeaderTwoStyled inverted content={`Welcome back ${user.displayName}`} />
+                <Button as={Link} to='/activities' size='huge' inverted style={{ maginLeft: '0.5em' }}>
+                  Go to activities
+                </Button>
+              </>
+            )
+            : (
+              <>
+                <HeaderTwoStyled inverted content='Welcome to Reactivities' />
+                <Button
+                  onClick={() => openModal(<LoginForm />)}
+                  size='huge'
+                  inverted
+                  style={{ maginLeft: '0.5em' }}
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => openModal(<RegisterForm />)}
+                  size='huge'
+                  inverted
+                  style={{ maginLeft: '0.5em' }}
+                >
+                  Register
+                </Button>
+              </>
+            )
+        }
       </Container>
     </SegmentStyled>
   )
