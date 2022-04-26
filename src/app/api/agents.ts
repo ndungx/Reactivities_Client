@@ -81,6 +81,7 @@ const Profiles = {
     follow: (username: string) => request.post(`/profiles/${username}/follow`, {}),
     unfollow: (username: string) => request.delete(`/profiles/${username}/follow`),
     listFollowings: (username: string, predicate: string) => request.get(`/profiles/${username}/follow?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) => request.get(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const exportedObject = {
