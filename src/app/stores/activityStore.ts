@@ -1,5 +1,5 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
-import { action, computed, observable, reaction, runInAction } from "mobx";
+import { action, computed, observable, reaction, runInAction, toJS } from "mobx";
 import { SyntheticEvent } from "react";
 import { toast } from "react-toastify";
 import { history } from "../..";
@@ -162,7 +162,7 @@ export default class ActivityStore {
         if (activity) {
             this.activity = activity;
 
-            return activity;
+            return toJS(activity);
         } else {
             this.loadingInitial = true;
 
