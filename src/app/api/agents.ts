@@ -77,6 +77,7 @@ const User = {
     login: (user: IUserFormValues): Promise<IUser> => request.post("/user/login", user),
     register: (user: IUserFormValues): Promise<IUser> => request.post("/user/register", user),
     fbLogin: (accessToken: string) => request.post(`/user/facebook`, { accessToken }),
+    refreshToken: (): Promise<IUser> => request.post(`/user/refreshToken`, {}),
 }
 
 const Profiles = {
