@@ -1,5 +1,6 @@
 {
     "name": "reactivities",
+    "homepage": "/reactivities",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -32,7 +33,6 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "postbuild": "move build ../Reactivities_Server/API/wwwroot",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "postinstall": "semantic-ui-css-patch"

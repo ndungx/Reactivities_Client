@@ -1,0 +1,7 @@
+**/node_modules 
+**/build
+**/.gitignore
+**/.git
+**/.github
+**/Dockerfile*
+**/README.md

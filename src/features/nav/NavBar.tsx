@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
         <MenuStyled fixed='top' inverted>
             <Container>
                 <Menu.Item header exact as={NavLink} to='/'>
-                    <img src='../assets/logo.png' alt='logo' style={{ marginRight: '10px' }} />
+                    <img src='../reactivities/assets/logo.png' alt='logo' style={{ marginRight: '10px' }} />
                     Reactivities
                 </Menu.Item>
                 <Menu.Item name='Activities' as={NavLink} to='/activities' />
@@ -36,7 +36,7 @@ const NavBar: React.FC = () => {
                 {
                     user && (
                         <Menu.Item position='right'>
-                            <Image avatar spaced='right' src={user.image || '/assets/user.png'} />
+                            <Image avatar spaced='right' src={user.image || '/reactivities/assets/user.png'} />
                             <Dropdown pointing='top left' text={user.displayName}>
                                 <Dropdown.Menu>
                                     <Dropdown.Item

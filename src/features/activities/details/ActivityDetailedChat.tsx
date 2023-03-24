@@ -34,7 +34,7 @@ const ActivityDetailedChat = () => {
                         activity && activity.comments &&
                         activity.comments.map((comment) => (
                             <Comment key={comment.id}>
-                                <Comment.Avatar src={comment.image || '/assets/user.png'} />
+                                <Comment.Avatar src={comment.image || '/reactivities/assets/user.png'} />
                                 <Comment.Content>
                                     <Comment.Author as={Link} to={`/profile/${comment.username}`}>
                                         {comment.displayName}

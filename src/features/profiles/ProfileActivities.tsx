@@ -65,7 +65,7 @@ const ProfileEvents = () => {
                                 key={activity.id}
                             >
                                 <Image
-                                    src={`/assets/categoryImages/${activity.category}.jpg`}
+                                    src={`/reactivities/assets/categoryImages/${activity.category}.jpg`}
                                     style={{ minHeight: 100, objectFit: 'cover' }}
                                 />
                                 <Card.Content>

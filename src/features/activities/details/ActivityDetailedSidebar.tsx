@@ -36,7 +36,7 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({ attendees }) => {
                                         Host
                                     </Label>
                                 }
-                                <Image size='tiny' src={attendee.image || '/assets/user.png'} />
+                                <Image size='tiny' src={attendee.image || '/reactivities/assets/user.png'} />
                                 <Item.Content verticalAlign='middle'>
                                     <Item.Header as='h3'>
                                         <Link to={`/profile/${attendee.username}`}>
